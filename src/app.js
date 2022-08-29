@@ -23,9 +23,10 @@ process.emitWarning = function (warning, ...args) {
 	return _emitWarning.apply(this, [warning, ...args]);
 };
 
-process.on('exit', () => {
+process.on('SIGINT', () => {
 	// Inquirer currently doesn't reset the cursor visibility on CTRL+C
 	console.log(`${ansi.cursorShow}`);
+	process.exit(0);
 });
 
 const cli = new Cli({
