@@ -9,6 +9,9 @@
 		"url": "https://codeberg.org/intrnl/netlifydd"
 	},
 	"bin": "src/app.js",
+	"files": [
+		"src/"
+	],
 	"dependencies": {
 		"@inquirer/core": "0.0.24-alpha.0",
 		"@inquirer/input": "0.0.24-alpha.0",
