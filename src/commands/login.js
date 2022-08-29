@@ -1,7 +1,7 @@
 import { Command, Option } from '@intrnl/clippy';
 import chalk from 'chalk';
 
-import { CLIENT_ID, globalConfig, getToken, request } from '../utils/client.js';
+import { CLIENT_ID, globalConfig, getToken, request, TimeoutError } from '../utils/client.js';
 import { delay } from '../utils/misc.js';
 
 
@@ -24,7 +24,7 @@ export class LoginCommand extends Command {
 			return;
 		}
 
-		await this.authenticate();
+		return await this.authenticate();
 	}
 
 	async authenticate () {
@@ -32,7 +32,7 @@ export class LoginCommand extends Command {
 
 		const { promisify } = await import('../utils/cli.js');
 
-		const ticket = await promisify({
+		let ticket = await promisify({
 			message: 'Retrieving authorization link',
 			promise: request('/oauth/tickets', {
 				method: 'POST',
@@ -49,26 +49,19 @@ export class LoginCommand extends Command {
 		console.log(chalk.blue.underline(authLink));
 		console.log(``);
 
-		const POLL = 1000 * 1.5; // 1.5 seconds
-		const TIMEOUT = 1000 * 60 * 3; // 3 minutes
-
-		const deadline = Date.now() + TIMEOUT;
-
-		while (true) {
-			const t = await request(`/oauth/tickets/${ticketId}`);
-
-			if (t.authorized) {
-				break;
+		try {
+			ticket = await promisify({
+				message: 'Waiting for authorization response',
+				promise: this.pollTicket(ticketId),
+			});
+		}
+		catch (error) {
+			if (error instanceof TimeoutError) {
+				console.error(chalk.red(`Authentication timed out, please try again.`));
+				return 1;
 			}
 
-			const future = Date.now() + POLL;
-
-			if (future >= deadline) {
-				console.log(chalk.red(`Authentication timed out, please try again.`));
-				return;
-			}
-
-			await delay(POLL);
+			throw error;
 		}
 
 		const exchange = await promisify({
@@ -101,5 +94,29 @@ export class LoginCommand extends Command {
 		});
 
 		console.log(`You're now logged in!`);
+		return 0;
+	}
+
+	async pollTicket (ticketId) {
+		const POLL = 1000 * 1.5; // 1.5 seconds
+		const TIMEOUT = 1000 * 60 * 3; // 3 minutes
+
+		const deadline = Date.now() + TIMEOUT;
+
+		while (true) {
+			const ticket = await request(`/oauth/tickets/${ticketId}`);
+
+			if (ticket.authorized) {
+				return ticket;
+			}
+
+			const future = Date.now() + POLL;
+
+			if (future >= deadline) {
+				throw new TimeoutError();
+			}
+
+			await delay(POLL);
+		}
 	}
 }

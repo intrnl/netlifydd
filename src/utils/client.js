@@ -120,3 +120,5 @@ export class ResponseError extends Error {
 		this.body = body;
 	}
 }
+
+export class TimeoutError extends Error {}
