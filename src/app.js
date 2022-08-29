@@ -5,6 +5,7 @@ import ansi from 'ansi-escapes';
 import { DeployCommand } from './commands/deploy.js';
 import { LinkCommand } from './commands/link.js';
 import { LoginCommand } from './commands/login.js';
+import { SwitchCommand } from './commands/switch.js';
 
 
 // Ignore experimental warning for fetch API.
@@ -39,6 +40,7 @@ cli.register(Builtins.VersionCommand);
 cli.register(DeployCommand);
 cli.register(LinkCommand);
 cli.register(LoginCommand);
+cli.register(SwitchCommand);
 
 const exitCode = await cli.run(process.argv.slice(2));
 process.exitCode = exitCode;
