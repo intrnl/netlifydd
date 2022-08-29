@@ -83,7 +83,7 @@ export class DeployCommand extends EnhancedCommand {
 		if (isAsync) {
 			deployment = await promisify({
 				message: `Waiting for deployment`,
-				promise: waitDeployStatus(siteId, deployId, ['prepared', 'uploading', 'uploaded', 'ready']),
+				promise: this.pollDeployStatus(siteId, deployId, ['prepared', 'uploading', 'uploaded', 'ready']),
 			});
 		}
 
@@ -124,7 +124,7 @@ export class DeployCommand extends EnhancedCommand {
 		deployment = await promisify({
 			message: `Waiting for deployment to go live`,
 			finished: 'Deployment is now live',
-			promise: waitDeployStatus(siteId, deployId, ['ready']),
+			promise: this.pollDeployStatus(siteId, deployId, ['ready']),
 		});
 
 		const deployUrl = deployment.deploy_ssl_url || deployment.deploy_url;
@@ -135,33 +135,33 @@ export class DeployCommand extends EnhancedCommand {
 
 		console.log(`Deployment is now live at ${isProduction ? siteUrl : deployUrl}`);
 	}
-}
 
-async function waitDeployStatus (siteId, deployId, statuses) {
-	const POLL = 1000 * 1.5; // 1.5 seconds
-	const TIMEOUT = 1000 * 60 * 3; // 3 minutes
+	async pollDeployStatus (siteId, deployId, statuses) {
+		const POLL = 1000 * 1.5; // 1.5 seconds
+		const TIMEOUT = 1000 * 60 * 3; // 3 minutes
 
-	const deadline = Date.now() + TIMEOUT;
+		const deadline = Date.now() + TIMEOUT;
 
-	while (true) {
-		const deployment = await request(`/sites/${siteId}/deploys/${deployId}`);
-		const deployState = deployment.state;
+		while (true) {
+			const deployment = await request(`/sites/${siteId}/deploys/${deployId}`);
+			const deployState = deployment.state;
 
-		if (statuses.includes(deployState)) {
-			return deployment;
+			if (statuses.includes(deployState)) {
+				return deployment;
+			}
+
+			if (deployState === 'error') {
+				throw new Error(`Deployment ${deployId} had an error`);
+			}
+
+			const future = Date.now() + POLL;
+
+			if (future >= deadline) {
+				throw new Error(`Timeout while waiting for deployment ${deployId}`);
+			}
+
+			await delay(POLL);
 		}
-
-		if (deployState === 'error') {
-			throw new Error(`Deployment ${deployId} had an error`);
-		}
-
-		const future = Date.now() + POLL;
-
-		if (future >= deadline) {
-			throw new Error(`Timeout while waiting for deployment ${deployId}`);
-		}
-
-		await delay(POLL);
 	}
 }
 
