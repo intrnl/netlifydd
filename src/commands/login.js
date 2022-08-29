@@ -2,10 +2,11 @@ import { Command, Option } from '@intrnl/clippy';
 import chalk from 'chalk';
 
 import { CLIENT_ID, globalConfig, getToken, request, TimeoutError } from '../utils/client.js';
+import { EnhancedCommand } from '../utils/cli.js';
 import { delay } from '../utils/misc.js';
 
 
-export class LoginCommand extends Command {
+export class LoginCommand extends EnhancedCommand {
 	static paths = [['login']];
 
 	static usage = Command.Usage({

@@ -3,6 +3,7 @@ import path from 'node:path';
 import chalk from 'chalk';
 
 import { ConfigStore, getConfigPath } from './config.js';
+import { AbortError } from './cli.js';
 
 
 // If you're looking to fork, please change this client ID, thanks!
@@ -43,7 +44,7 @@ export function assertAuthentication () {
 		console.log(chalk.red`You're currently not authenticated!`);
 		console.log(`Run ${chalk.blue(`netlifydd login`)} to get started.`);
 
-		return process.exit(1);
+		throw new AbortError();
 	}
 
 	ENDPOINT_HEADERS.set('Authorization', `Bearer ${token}`);

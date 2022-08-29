@@ -1,10 +1,10 @@
-import { Command } from '@intrnl/clippy';
 import chalk from 'chalk';
 
 import { globalConfig } from '../utils/client.js';
+import { EnhancedCommand } from '../utils/cli.js';
 
 
-export class SwitchCommand extends Command {
+export class SwitchCommand extends EnhancedCommand {
 	static paths = [['switch']];
 
 	async execute () {

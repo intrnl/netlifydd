@@ -1,6 +1,19 @@
 import { createPrompt, useEffect, useState, usePrefix } from '@inquirer/core';
+import { Command } from '@intrnl/clippy';
 import ansi from 'ansi-escapes';
 
+
+export class EnhancedCommand extends Command {
+	async catch (error) {
+		if (error instanceof AbortError) {
+			return;
+		}
+
+		return super.catch(error);
+	}
+}
+
+export class AbortError extends Error {}
 
 export const promisify = createPrompt((config, done) => {
 	const { message = 'Please wait', finished, promise } = config;

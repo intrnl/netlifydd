@@ -3,9 +3,10 @@ import { Command, Option } from '@intrnl/clippy';
 import chalk from 'chalk';
 
 import { assertAuthentication, localConfig, request } from '../utils/client.js';
+import { AbortError, EnhancedCommand } from '../utils/cli.js';
 
 
-export class LinkCommand extends Command {
+export class LinkCommand extends EnhancedCommand {
 	static paths = [['link']];
 
 	static usage = Command.Usage({
@@ -149,7 +150,7 @@ export class LinkCommand extends Command {
 
 		if (list.length < 1) {
 			console.log(`You don't have any sites yet.`);
-			return process.exit(1);
+			throw new AbortError();
 		}
 
 		const site = await select({
@@ -184,7 +185,7 @@ export class LinkCommand extends Command {
 		catch (error) {
 			if (error.response?.status === 404) {
 				console.error(chalk.red(`> ${chalk.bold(siteInput)} cannot be found.`));
-				return process.exit(1);
+				throw new AbortError();
 			}
 
 			throw error;

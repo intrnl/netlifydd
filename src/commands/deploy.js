@@ -4,10 +4,11 @@ import crypto from 'node:crypto';
 import { Command, Option } from '@intrnl/clippy';
 
 import { assertAuthentication, localConfig, request } from '../utils/client.js';
+import { EnhancedCommand } from '../utils/cli.js';
 import { delay } from '../utils/misc.js';
 
 
-export class DeployCommand extends Command {
+export class DeployCommand extends EnhancedCommand {
 	static paths = [['deploy']];
 
 	static usage = Command.Usage({
