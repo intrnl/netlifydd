@@ -1,0 +1,8 @@
+node_modules/
+
+.pnpm-*.log
+.npm-*.log
+.yarn-*.log
+pnpm-*.log
+npm-*.log
+yarn-*.log
