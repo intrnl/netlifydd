@@ -14,11 +14,11 @@ are unnecessary for deploying prebuilt assets.
 $ npm install --save-dev @intrnl/netlifydd
 
 # login to your Netlify account
-$ netlifydd login
+$ npm exec netlifydd login
 
 # link project folder to a Netlify site
-$ netlifydd link
+$ npm exec netlifydd link
 
 # create a deployment!
-$ netlifydd deploy dist
+$ npm exec netlifydd deploy dist
 ```
