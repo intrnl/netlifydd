@@ -5,6 +5,7 @@ import ansi from 'ansi-escapes';
 import { DeployCommand } from './commands/deploy.js';
 import { LinkCommand } from './commands/link.js';
 import { LoginCommand } from './commands/login.js';
+import { LogoutCommand } from './commands/logout.js';
 import { SwitchCommand } from './commands/switch.js';
 
 
@@ -40,6 +41,7 @@ cli.register(Builtins.VersionCommand);
 cli.register(DeployCommand);
 cli.register(LinkCommand);
 cli.register(LoginCommand);
+cli.register(LogoutCommand);
 cli.register(SwitchCommand);
 
 const exitCode = await cli.run(process.argv.slice(2));
