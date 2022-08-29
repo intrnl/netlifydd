@@ -23,11 +23,15 @@ process.emitWarning = function (warning, ...args) {
 	return _emitWarning.apply(this, [warning, ...args]);
 };
 
+// Inquirer currently doesn't reset the cursor visibility on CTRL+C
 process.on('SIGINT', () => {
-	// Inquirer currently doesn't reset the cursor visibility on CTRL+C
 	console.log(`${ansi.cursorShow}`);
-	process.exit(0);
+	process.exit(1);
 });
+
+process.on('exit', () => {
+	console.log(`${ansi.cursorShow}`);
+})
 
 const cli = new Cli({
 	binaryLabel: 'netlifydd',
