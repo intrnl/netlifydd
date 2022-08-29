@@ -4,7 +4,7 @@ specifiers:
   '@inquirer/core': 0.0.24-alpha.0
   '@inquirer/input': 0.0.24-alpha.0
   '@inquirer/select': 0.0.24-alpha.0
-  '@intrnl/clippy': ^0.1.4
+  '@intrnl/clippy': ^0.1.5
   ansi-escapes: ^5.0.0
   chalk: ^5.0.1
 
@@ -12,7 +12,7 @@ dependencies:
   '@inquirer/core': 0.0.24-alpha.0
   '@inquirer/input': 0.0.24-alpha.0
   '@inquirer/select': 0.0.24-alpha.0
-  '@intrnl/clippy': 0.1.4
+  '@intrnl/clippy': 0.1.5
   ansi-escapes: 5.0.0
   chalk: 5.0.1
 
@@ -49,8 +49,8 @@ packages:
       figures: 4.0.1
     dev: false
 
-  /@intrnl/clippy/0.1.4:
-    resolution: {integrity: sha512-tefry00+cftS3Wo7yWjVAnhQeAVI5NC0KgZV7cuYWOJTIq6GJmFPRbYUawcgkr7pE5mz4n44Ocrjm9GxzdRQIg==}
+  /@intrnl/clippy/0.1.5:
+    resolution: {integrity: sha512-yJauuEGst9an62SeTtezOvkJI2I9jVEsDToqTDSQxaxcpHoL5wS51oYUvIgZcxpzJ4gb6RiThPzIiveiZHVAHw==}
     dependencies:
       typanion: 3.9.0
     dev: false
