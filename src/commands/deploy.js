@@ -116,6 +116,8 @@ export class DeployCommand extends Command {
 
 			console.error(`Deployment failed!`);
 			console.error(error);
+
+			return;
 		}
 
 		deployment = await promisify({
