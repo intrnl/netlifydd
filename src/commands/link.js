@@ -75,20 +75,13 @@ export class LinkCommand extends EnhancedCommand {
 			promise: request('/accounts'),
 		});
 
-		let accountInput;
-
-		if (accounts.length > 1) {
-			accountInput = await select({
-				message: 'Team:',
-				choices: accounts.map((account) => ({
-					value: account.slug,
-					name: account.name,
-				})),
-			});
-		}
-		else {
-			accountInput = accounts[0].slug;
-		}
+		const accountInput = await select({
+			message: 'Team:',
+			choices: accounts.map((account) => ({
+				value: account.slug,
+				name: account.name,
+			})),
+		});
 
 		const { default: adjectives } = await import('../words/adjectives.js');
 		const { default: nouns } = await import('../words/nouns.js');
