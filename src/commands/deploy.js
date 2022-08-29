@@ -29,6 +29,7 @@ export class DeployCommand extends Command {
 
 		const siteId = localConfig.get('site_id');
 		const directory = this.directory;
+		const isProduction = this.production;
 
 		if (!siteId) {
 			console.log('This project has not been linked yet!');
@@ -70,7 +71,7 @@ export class DeployCommand extends Command {
 				},
 				body: JSON.stringify({
 					async: isAsync,
-					draft: !this.production,
+					draft: !isProduction,
 					files: hashes,
 				}),
 			}),
@@ -123,7 +124,13 @@ export class DeployCommand extends Command {
 			promise: waitDeployStatus(siteId, deployId, ['ready']),
 		});
 
-		console.log('Done!');
+		const deployUrl = deployment.deploy_ssl_url || deployment.deploy_url;
+		const siteUrl = deployment.ssl_url || deployment.url;
+
+		console.log(`Done, deployed ${isProduction ? `to production` : `as draft`}.`);
+		console.log(``);
+
+		console.log(`Deployment is now live at ${isProduction ? siteUrl : deployUrl}`);
 	}
 }
 
