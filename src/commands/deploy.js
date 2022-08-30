@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+import fs, { promises as fsp } from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { Command, Option } from '@intrnl/clippy';
@@ -37,25 +37,10 @@ export class DeployCommand extends EnhancedCommand {
 			return;
 		}
 
-		const files = [...traverse(directory)];
-
-		const hashes = Object.create(null);
-		const digests = Object.create(null);
-
-		for (let idx = 0, len = files.length; idx < len; idx++) {
-			const filename = files[idx];
-
-			const hash = crypto.createHash('sha1');
-			const fd = fs.createReadStream(path.join(directory, filename));
-
-			const digest = await new Promise((resolve) => {
-				fd.on('end', () => resolve(hash.digest('hex')));
-				fd.pipe(hash);
-			});
-
-			hashes[filename] = digest;
-			digests[digest] = filename;
-		}
+		const { files, hashes, digests } = await promisify({
+			message: 'Traversing asset directory',
+			promise: this.traverseDirectory(directory),
+		});
 
 		const isAsync = files.length > 100;
 
@@ -136,6 +121,34 @@ export class DeployCommand extends EnhancedCommand {
 		console.log(`Deployment is now live at ${isProduction ? siteUrl : deployUrl}`);
 	}
 
+	async traverseDirectory (directory) {
+		const files = [];
+
+		for await (const file of traverse(directory)) {
+			files.push(file);
+		}
+
+		const hashes = Object.create(null);
+		const digests = Object.create(null);
+
+		for (let idx = 0, len = files.length; idx < len; idx++) {
+			const filename = files[idx];
+
+			const hash = crypto.createHash('sha1');
+			const fd = fs.createReadStream(path.join(directory, filename));
+
+			const digest = await new Promise((resolve) => {
+				fd.on('end', () => resolve(hash.digest('hex')));
+				fd.pipe(hash);
+			});
+
+			hashes[filename] = digest;
+			digests[digest] = filename;
+		}
+
+		return { files, hashes, digests };
+	}
+
 	async pollDeployStatus (siteId, deployId, statuses) {
 		const POLL = 1000 * 1.5; // 1.5 seconds
 		const TIMEOUT = 1000 * 60 * 3; // 3 minutes
@@ -165,8 +178,8 @@ export class DeployCommand extends EnhancedCommand {
 	}
 }
 
-function* traverse (pathname, prefix = '.') {
-	const listing = fs.readdirSync(pathname, { withFileTypes: true });
+async function* traverse (pathname, prefix = '.') {
+	const listing = await fsp.readdir(pathname, { withFileTypes: true });
 
 	for (const entry of listing) {
 		const name = entry.name;
