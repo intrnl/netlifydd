@@ -67,7 +67,7 @@ export class DeployCommand extends EnhancedCommand {
 
 		if (isAsync) {
 			deployment = await promisify({
-				message: `Waiting for deployment`,
+				message: `Waiting for deployment to be ready`,
 				promise: this.pollDeployStatus(siteId, deployId, ['prepared', 'uploading', 'uploaded', 'ready']),
 			});
 		}
