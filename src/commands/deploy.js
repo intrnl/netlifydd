@@ -46,7 +46,6 @@ export class DeployCommand extends EnhancedCommand {
 
 		let deployment = await promisify({
 			message: 'Creating a deployment',
-			finished: 'Deployment created',
 			promise: request(`/sites/${siteId}/deploys`, {
 				method: 'POST',
 				headers: {
@@ -62,6 +61,8 @@ export class DeployCommand extends EnhancedCommand {
 				}),
 			}),
 		});
+
+		console.log(`- Deployment created`);
 
 		const deployId = deployment.id;
 
@@ -94,11 +95,12 @@ export class DeployCommand extends EnhancedCommand {
 		catch (error) {
 			await promisify({
 				message: `Reverting deployment`,
-				finished: 'Deployment reverted',
 				promise: request(`/deploys/${deployId}/cancel`, {
 					method: 'POST',
 				}),
 			});
+
+			console.log(`- Deployment reverted`);
 
 			console.error(`Deployment failed!`);
 			console.error(error);
@@ -109,12 +111,11 @@ export class DeployCommand extends EnhancedCommand {
 		if (deployment.status !== 'ready') {
 			deployment = await promisify({
 				message: `Waiting for deployment to go live`,
-				finished: `Deployment is now live`,
 				promise: this.pollDeployStatus(siteId, deployId, ['ready']),
 			});
-		} else {
-			console.log(`- Deployment is now live`);
 		}
+
+		console.log(`- Deployment is now live`);
 
 		const deployUrl = deployment.deploy_ssl_url || deployment.deploy_url;
 		const siteUrl = deployment.ssl_url || deployment.url;

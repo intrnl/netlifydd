@@ -16,7 +16,7 @@ export class EnhancedCommand extends Command {
 export class AbortError extends Error {}
 
 export const promisify = createPrompt((config, done) => {
-	const { message = 'Please wait', finished, promise } = config;
+	const { message = 'Please wait', promise } = config;
 
 	const [resolved, setResolved] = useState(false);
 	const prefix = usePrefix(true);
@@ -35,10 +35,6 @@ export const promisify = createPrompt((config, done) => {
 	}, []);
 
 	if (resolved) {
-		if (finished) {
-			return `- ${finished}`;
-		}
-
 		return `${ansi.cursorMove(0, -2)}`;
 	}
 
