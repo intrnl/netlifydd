@@ -2,6 +2,7 @@ import fs, { promises as fsp } from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { Command, Option } from '@intrnl/clippy';
+import chalk from 'chalk';
 
 import { assertAuthentication, localConfig, request } from '../utils/client.js';
 import { EnhancedCommand } from '../utils/cli.js';
@@ -62,7 +63,7 @@ export class DeployCommand extends EnhancedCommand {
 			}),
 		});
 
-		console.log(`- Deployment created`);
+		console.log(chalk.gray(`- Deployment created`));
 
 		const deployId = deployment.id;
 
@@ -100,7 +101,7 @@ export class DeployCommand extends EnhancedCommand {
 				}),
 			});
 
-			console.log(`- Deployment reverted`);
+			console.log(chalk.gray(`- Deployment reverted`));
 
 			console.error(`Deployment failed!`);
 			console.error(error);
@@ -115,7 +116,7 @@ export class DeployCommand extends EnhancedCommand {
 			});
 		}
 
-		console.log(`- Deployment is now live`);
+		console.log(chalk.gray(`- Deployment is now live`));
 
 		const deployUrl = deployment.deploy_ssl_url || deployment.deploy_url;
 		const siteUrl = deployment.ssl_url || deployment.url;
