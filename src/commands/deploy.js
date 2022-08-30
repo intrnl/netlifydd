@@ -106,11 +106,13 @@ export class DeployCommand extends EnhancedCommand {
 			return;
 		}
 
-		deployment = await promisify({
-			message: `Waiting for deployment to go live`,
-			finished: 'Deployment is now live',
-			promise: this.pollDeployStatus(siteId, deployId, ['ready']),
-		});
+		if (deployment.status !== 'ready') {
+			deployment = await promisify({
+				message: `Waiting for deployment to go live`,
+				finished: 'Deployment is now live',
+				promise: this.pollDeployStatus(siteId, deployId, ['ready']),
+			});
+		}
 
 		const deployUrl = deployment.deploy_ssl_url || deployment.deploy_url;
 		const siteUrl = deployment.ssl_url || deployment.url;
