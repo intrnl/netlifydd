@@ -109,9 +109,11 @@ export class DeployCommand extends EnhancedCommand {
 		if (deployment.status !== 'ready') {
 			deployment = await promisify({
 				message: `Waiting for deployment to go live`,
-				finished: 'Deployment is now live',
+				finished: `Deployment is now live`,
 				promise: this.pollDeployStatus(siteId, deployId, ['ready']),
 			});
+		} else {
+			console.log(`- Deployment is now live`);
 		}
 
 		const deployUrl = deployment.deploy_ssl_url || deployment.deploy_url;
