@@ -35,7 +35,7 @@ export class DeployCommand extends EnhancedCommand {
 
 		if (!siteId) {
 			console.log('This project has not been linked yet!');
-			return;
+			return 1;
 		}
 
 		const { files, hashes, digests } = await promisify({
