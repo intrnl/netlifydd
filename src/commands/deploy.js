@@ -106,7 +106,7 @@ export class DeployCommand extends EnhancedCommand {
 			console.error(`Deployment failed!`);
 			console.error(error);
 
-			return;
+			return 1;
 		}
 
 		if (deployment.status !== 'ready') {
