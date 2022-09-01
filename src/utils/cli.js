@@ -15,28 +15,25 @@ export class EnhancedCommand extends Command {
 
 export class AbortError extends Error {}
 
-export const promisify = createPrompt((config, done) => {
+export const _promisify = createPrompt((config, done) => {
 	const { message = 'Please wait', promise } = config;
 
-	const [resolved, setResolved] = useState(false);
 	const prefix = usePrefix(true);
 
 	useEffect(() => {
 		Promise.resolve(promise).then(
 			(val) => {
-				setResolved(true);
 				done(val);
 			},
 			(err) => {
-				setResolved(true);
 				done(Promise.reject(err));
 			},
 		);
 	}, []);
 
-	if (resolved) {
-		return `${ansi.cursorMove(0, -2)}`;
-	}
-
 	return `${prefix} ${message}${ansi.cursorHide}`;
 });
+
+export function promisify (options) {
+	return _promisify(options, { clearPromptOnDone: true })
+}
