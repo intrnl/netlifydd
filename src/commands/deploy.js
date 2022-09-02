@@ -49,17 +49,14 @@ export class DeployCommand extends EnhancedCommand {
 			message: 'Creating a deployment',
 			promise: request(`/sites/${siteId}/deploys`, {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
 				params: {
 					title: this.message ? this.message.trim() : '',
 				},
-				body: JSON.stringify({
+				body: {
 					async: isAsync,
 					draft: !isProduction,
 					files: hashes,
-				}),
+				},
 			}),
 		});
 

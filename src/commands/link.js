@@ -103,11 +103,8 @@ export class LinkCommand extends EnhancedCommand {
 					message: 'Creating site',
 					promise: request(`/${accountInput}/sites`, {
 						method: 'POST',
-						body: JSON.stringify({
+						body: {
 							name: nameInput,
-						}),
-						headers: {
-							'Content-Type': 'application/json',
 						},
 					}),
 				});

@@ -51,18 +51,26 @@ export function assertAuthentication () {
 }
 
 export async function request (endpoint, config = {}) {
-	const { method, body, headers = null, params } = config;
+	let { method, body, headers = null, params } = config;
 
+	let customHeaders = null
 	const url = new URL(`${ENDPOINT_URL}${endpoint}`);
 
 	if (params) {
 		url.search = '?' + new URLSearchParams(params);
 	}
 
+	if (isPlainObject(body)) {
+		customHeaders ||= new Headers()
+		customHeaders.append('Content-Type', 'application/json');
+
+		body = JSON.stringify(body);
+	}
+
 	const response = await fetch(url, {
 		method: method,
 		body: body,
-		headers: mergeHeaders([ENDPOINT_HEADERS, headers]),
+		headers: mergeHeaders([ENDPOINT_HEADERS, customHeaders, headers]),
 	});
 
 	let json;
@@ -75,6 +83,15 @@ export async function request (endpoint, config = {}) {
 	}
 
 	return json;
+}
+
+function isPlainObject (value) {
+	if (typeof value !== 'object' || value === null) {
+		return false;
+	}
+
+	var prototype = Object.getPrototypeOf(value);
+	return prototype === null || prototype === Object.prototype;
 }
 
 function mergeHeaders (headers) {
