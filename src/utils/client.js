@@ -118,12 +118,12 @@ function mergeHeaders (headers) {
 			continue;
 		}
 
-		if (inherit) {
-			head = new Headers(head);
-			inherit = false;
-		}
-
 		for (const [key, value] of header) {
+			if (inherit) {
+				head = new Headers(head);
+				inherit = false;
+			}
+
 			head.set(key, value);
 		}
 	}
