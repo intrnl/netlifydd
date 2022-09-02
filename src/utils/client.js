@@ -53,7 +53,7 @@ export function assertAuthentication () {
 export async function request (endpoint, config = {}) {
 	let { method, body, headers = null, params } = config;
 
-	let customHeaders = null
+	let customHeaders = new Headers();
 	const url = new URL(`${ENDPOINT_URL}${endpoint}`);
 
 	if (params) {
@@ -61,9 +61,7 @@ export async function request (endpoint, config = {}) {
 	}
 
 	if (isPlainObject(body)) {
-		customHeaders ||= new Headers()
 		customHeaders.append('Content-Type', 'application/json');
-
 		body = JSON.stringify(body);
 	}
 
