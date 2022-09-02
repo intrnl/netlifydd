@@ -95,13 +95,13 @@ export class DeployCommand extends EnhancedCommand {
 		}
 		catch (error) {
 			await promisify({
-				message: `Reverting deployment`,
+				message: `Deployment failed, cancelling`,
 				promise: request(`/deploys/${deployId}/cancel`, {
 					method: 'POST',
 				}),
 			});
 
-			console.log(chalk.gray(`- Deployment reverted`));
+			console.log(chalk.gray(`- Deployment cancelled`));
 
 			console.error(`Deployment failed!`);
 			console.error(error);
