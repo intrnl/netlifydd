@@ -1,4 +1,4 @@
-import { createPrompt, useEffect, useState, usePrefix } from '@inquirer/core';
+import { createPrompt, useEffect, usePrefix } from '@inquirer/core';
 import { Command } from '@intrnl/clippy';
 import ansi from 'ansi-escapes';
 
