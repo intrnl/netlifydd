@@ -3,7 +3,7 @@ import { Command, Option } from '@intrnl/clippy';
 import chalk from 'chalk';
 
 import { assertAuthentication, localConfig, request } from '../utils/client.js';
-import { AbortError, EnhancedCommand } from '../utils/cli.js';
+import { AbortError, EnhancedCommand } from '../utils/command.js';
 
 
 export class LinkCommand extends EnhancedCommand {

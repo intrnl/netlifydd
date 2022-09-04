@@ -3,7 +3,7 @@ import path from 'node:path';
 import chalk from 'chalk';
 
 import { ConfigStore, getConfigPath } from './config.js';
-import { AbortError } from './cli.js';
+import { AbortError } from './command.js';
 
 
 // If you're looking to fork, please change this client ID, thanks!

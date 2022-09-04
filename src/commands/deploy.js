@@ -5,7 +5,7 @@ import { Command, Option } from '@intrnl/clippy';
 import chalk from 'chalk';
 
 import { assertAuthentication, localConfig, request } from '../utils/client.js';
-import { EnhancedCommand } from '../utils/cli.js';
+import { EnhancedCommand } from '../utils/command.js';
 import { delay } from '../utils/misc.js';
 
 

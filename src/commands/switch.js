@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 
 import { globalConfig } from '../utils/client.js';
-import { EnhancedCommand } from '../utils/cli.js';
+import { EnhancedCommand } from '../utils/command.js';
 
 
 export class SwitchCommand extends EnhancedCommand {
