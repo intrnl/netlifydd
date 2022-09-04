@@ -83,8 +83,7 @@ export class LinkCommand extends EnhancedCommand {
 			})),
 		});
 
-		const { default: adjectives } = await import('../words/adjectives.js');
-		const { default: nouns } = await import('../words/nouns.js');
+		const { adjectives, nouns } = await import('../misc/words.js');
 
 		let site;
 
