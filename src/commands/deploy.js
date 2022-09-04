@@ -27,8 +27,6 @@ export class DeployCommand extends EnhancedCommand {
 	async execute () {
 		assertAuthentication();
 
-		const { promisify } = await import('../utils/cli.js');
-
 		const siteId = localConfig.get('site_id');
 		const directory = this.directory;
 		const isProduction = this.production;
@@ -37,6 +35,8 @@ export class DeployCommand extends EnhancedCommand {
 			console.log('This project has not been linked yet!');
 			return 1;
 		}
+
+		const { promisify } = await import('../utils/cli.js');
 
 		const { files, hashes, digests } = await promisify({
 			message: 'Traversing asset directory',

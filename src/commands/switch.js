@@ -8,8 +8,6 @@ export class SwitchCommand extends EnhancedCommand {
 	static paths = [['switch']];
 
 	async execute () {
-		const { default: select } = await import('@inquirer/select');
-
 		const currentId = globalConfig.get('active_user');
 		const current = currentId && globalConfig.get(`users.${currentId}`);
 
@@ -37,6 +35,8 @@ export class SwitchCommand extends EnhancedCommand {
 			console.log(`There are no other accounts to switch to.`);
 			return;
 		}
+
+		const { default: select } = await import('@inquirer/select');
 
 		const next = await select({
 			message: 'Switch accounts to?',
