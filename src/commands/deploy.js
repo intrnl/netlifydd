@@ -124,14 +124,20 @@ export class DeployCommand extends EnhancedCommand {
 		console.log(`Deployment is now live at ${isProduction ? siteUrl : deployUrl}`);
 	}
 
+	/**
+	 * @param {string} directory
+	 */
 	async traverseDirectory (directory) {
+		/** @type {string[]} */
 		const files = [];
 
 		for await (const file of traverse(directory)) {
 			files.push(file);
 		}
 
+		/** @type {Record<string, string>} */
 		const hashes = Object.create(null);
+		/** @type {Record<string, string>} */
 		const digests = Object.create(null);
 
 		for (let idx = 0, len = files.length; idx < len; idx++) {
@@ -152,6 +158,11 @@ export class DeployCommand extends EnhancedCommand {
 		return { files, hashes, digests };
 	}
 
+	/**
+	 * @param {string} siteId
+	 * @param {string} deployId
+	 * @param {string[]} statuses
+	 */
 	async pollDeployStatus (siteId, deployId, statuses) {
 		const POLL = 1000 * 1.5; // 1.5 seconds
 		const TIMEOUT = 1000 * 60 * 3; // 3 minutes

@@ -21,6 +21,13 @@ export const _promisify = createPrompt((config, done) => {
 	return `${prefix} ${message}${ansi.cursorHide}`;
 });
 
+/**
+ * @template Value
+ * @param {object} options
+ * @param {Promise<Value>} options.promise
+ * @param {string} [options.message]
+ * @returns {Promise<Value>}
+ */
 export function promisify (options) {
 	return _promisify(options, { clearPromptOnDone: true })
 }

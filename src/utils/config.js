@@ -58,10 +58,18 @@ export class ConfigStore {
 		}
 	}
 
+	/**
+	 * @param {string} key
+	 * @param {string} [defaultValue]
+	 */
 	get (key, defaultValue) {
 		return get(this._config, key, defaultValue);
 	}
 
+	/**
+	 * @param {string} key
+	 * @param {any} value
+	 */
 	set (key, value) {
 		set(this._config, key, value);
 
@@ -69,10 +77,18 @@ export class ConfigStore {
 		return value;
 	}
 
+	/**
+	 * @param {string} key
+	 * @returns {boolean}
+	 */
 	has (key) {
 		return has(this._config, key);
 	}
 
+	/**
+	 * @param {string} key
+	 * @returns {boolean}
+	 */
 	delete (key) {
 		const ret = del(this._config, key);
 
@@ -91,6 +107,10 @@ export class ConfigStore {
 	}
 }
 
+/**
+ * @param {string} name
+ * @returns {string}
+ */
 export function getConfigPath (name) {
 	const homedir = os.homedir();
 
@@ -109,6 +129,10 @@ export function getConfigPath (name) {
 	}
 }
 
+/**
+ * @param {string} str
+ * @returns {string[]}
+ */
 function split (str) {
 	if (str === '') {
 		return [];
@@ -117,6 +141,10 @@ function split (str) {
 	return str.split('.');
 }
 
+/**
+ * @param {any} value
+ * @returns {value is Record<any, any>}
+ */
 function isObject (value) {
 	return value && typeof value === 'object';
 }

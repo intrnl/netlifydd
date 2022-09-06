@@ -98,6 +98,9 @@ export class LoginCommand extends EnhancedCommand {
 		return 0;
 	}
 
+	/**
+	 * @param {string} ticketId
+	 */
 	async pollTicket (ticketId) {
 		const POLL = 1000 * 1.5; // 1.5 seconds
 		const TIMEOUT = 1000 * 60 * 3; // 3 minutes

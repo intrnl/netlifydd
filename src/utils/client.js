@@ -22,6 +22,9 @@ export const globalConfig = new ConfigStore(globalConfigPath);
 export const localConfigPath = path.resolve('./netlifydd.json');
 export const localConfig = new ConfigStore(localConfigPath);
 
+/**
+ * @returns {[token: string | null, source: string]}
+ */
 export function getToken () {
 	const envToken = process.env.NETLIFYDD_AUTH_TOKEN;
 	if (envToken) {
@@ -50,6 +53,14 @@ export function assertAuthentication () {
 	ENDPOINT_HEADERS.set('Authorization', `Bearer ${token}`);
 }
 
+/**
+ * @param {string} endpoint
+ * @param {object} [config]
+ * @param {string} [config.method]
+ * @param {any} [config.body]
+ * @param {Headers | Record<string, string>} [config.headers]
+ * @param {Record<string, string>} [config.params]
+ */
 export async function request (endpoint, config = {}) {
 	let { method, body, headers = null, params } = config;
 
@@ -83,6 +94,10 @@ export async function request (endpoint, config = {}) {
 	return json;
 }
 
+/**
+ * @param {any} value
+ * @returns {value is Record<any, any>}
+ */
 function isPlainObject (value) {
 	if (typeof value !== 'object' || value === null) {
 		return false;
@@ -92,6 +107,10 @@ function isPlainObject (value) {
 	return prototype === null || prototype === Object.prototype;
 }
 
+/**
+ * @param {Array<null | Headers | Record<string, string>} headers
+ * @returns {Headers}
+ */
 function mergeHeaders (headers) {
 	let head = null;
 	let inherit = false;

@@ -192,6 +192,11 @@ export class LinkCommand extends EnhancedCommand {
 
 }
 
+/**
+ * @template Value
+ * @param {Value[]} array
+ * @returns {Value}
+ */
 function choose (array) {
 	const len = array.length;
 	const idx = Math.floor(Math.random() * len);
@@ -200,6 +205,10 @@ function choose (array) {
 	return item;
 }
 
+/**
+ * @param {string} name
+ * @returns {boolean}
+ */
 function validateSiteName (name) {
 	if (name.trim() === '') {
 		return 'Site name cannot be empty';
