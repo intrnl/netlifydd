@@ -79,7 +79,7 @@ export class DeployCommand extends EnhancedCommand {
 				const filename = digests[digest];
 
 				await promisify({
-					message: `(${idx}/${len}) Uploading ${filename}`,
+					message: `(${idx + 1}/${len}) Uploading ${filename}`,
 					promise: request(`/deploys/${deployId}/files/${filename}`, {
 						method: 'PUT',
 						headers: {
