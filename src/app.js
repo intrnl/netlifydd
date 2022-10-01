@@ -36,7 +36,7 @@ process.on('exit', () => {
 const cli = new Cli({
 	binaryLabel: 'netlifydd',
 	binaryName: 'netlifydd',
-	binaryVersion: '0.1.0',
+	binaryVersion: '0.1.6',
 });
 
 cli.register(Builtins.DefinitionsCommand);
