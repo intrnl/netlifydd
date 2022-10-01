@@ -1,3 +1,4 @@
+import { Command } from '@intrnl/clippy';
 import chalk from 'chalk';
 
 import { globalConfig } from '../utils/client.js';
@@ -6,6 +7,10 @@ import { EnhancedCommand } from '../utils/command.js';
 
 export class LogoutCommand extends EnhancedCommand {
 	static paths = [['logout']];
+
+	static usage = Command.Usage({
+		description: 'Logout from your Netlify account',
+	});
 
 	async execute () {
 		const currentId = globalConfig.get('active_user');

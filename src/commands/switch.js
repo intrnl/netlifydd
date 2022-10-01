@@ -1,3 +1,4 @@
+import { Command } from '@intrnl/clippy';
 import chalk from 'chalk';
 
 import { globalConfig } from '../utils/client.js';
@@ -6,6 +7,10 @@ import { EnhancedCommand } from '../utils/command.js';
 
 export class SwitchCommand extends EnhancedCommand {
 	static paths = [['switch']];
+
+	static usage = Command.Usage({
+		description: 'Switch between your currently logged-in Netlify accounts',
+	});
 
 	async execute () {
 		const currentId = globalConfig.get('active_user');
